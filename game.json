@@ -1,19 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/pewplay/pewplay/main/schema/game.schema.json",
   "title": "2048",
-<<<<<<< Updated upstream
-  "description": "Merge tiles with the same number to reach the 2048 tile. Play for free in your browser.",
-  "category": "Puzzle",
-  "tags": [
-    "puzzle",
-    "2048",
-    "numbers",
-    "logic",
-    "math"
-  ],
-  "author": "PewPlay",
-  "playMode": "SinglePlayer"
-=======
   "description": "Slide the numbered tiles, merge matching pairs and race the clock to build the 2048 tile. The classic number puzzle, free in your browser.",
   "about": "2048 is the classic sliding number puzzle. Every move pushes all the tiles on the 4×4 board in one direction, and when two tiles with the same number collide they merge into one with double the value: 2 and 2 make 4, 4 and 4 make 8, all the way up to 2048.\n\nAfter each move a new 2 or 4 appears in an empty cell, so the board keeps filling up. The game ends when no move is left, and you win when you build the 2048 tile — then you can keep going to chase an even higher score. A timer starts with your first move, so you can also try to reach 2048 faster than last time.\n\nYour best score and your current game are saved in your browser, so you can close the page and pick up exactly where you left off.",
   "howToPlay": "Use the arrow keys or swipe to slide every tile on the board in one direction. Two tiles with the same number merge into one and add their value to your score. Reach the 2048 tile to win; the game is over when the board is full and no tiles can merge.",
@@ -41,5 +28,4 @@
   "orientation": "any",
   "cover": "cover.png",
   "screenshots": ["screenshots/1.png", "screenshots/2.png", "screenshots/3.png"]
->>>>>>> Stashed changes
 }
