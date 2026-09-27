@@ -1,8 +1,15 @@
 {
+  "$schema": "https://raw.githubusercontent.com/pewplay/pewplay/main/schema/game.schema.json",
   "title": "2048",
   "description": "Merge tiles with the same number to reach the 2048 tile. Play for free in your browser.",
-  "keywords": ["puzzle", "2048", "numbers", "logic", "math"],
   "category": "Puzzle",
+  "tags": [
+    "puzzle",
+    "2048",
+    "numbers",
+    "logic",
+    "math"
+  ],
   "author": "PewPlay",
   "playMode": "SinglePlayer"
 }
