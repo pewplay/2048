@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <title>2048</title>
@@ -14,7 +14,7 @@
 
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 <body>
   
@@ -30,16 +30,16 @@
     </div>
 
     <div class="above-game">
-      <p class="game-intro">Gioca e raggiungi <strong>2048!</strong></p>
-      <a class="restart-button">Nuova partita</a>
+      <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
+      <a class="restart-button">New Game</a>
     </div>
 
     <div class="game-container">
       <div class="game-message">
         <p></p>
         <div class="lower">
-	        <a class="keep-playing-button">Continua</a>
-          <a class="retry-button" onclick="resetTimer('timer-value')">Riprova</a>
+	        <a class="keep-playing-button">Keep going</a>
+          <a class="retry-button">Try again</a>
         </div>
       </div>
 
@@ -76,7 +76,7 @@
     </div>
 
     <p class="game-explanation">
-      <strong class="important">Come giocare:</strong> Usa i tasti freccia per spostare le tessere. Quando due tessere con lo stesso numero si toccano, si fondono in una sola!
+      <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> or <strong>swipe</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
     </p>
   </div>
 
@@ -91,6 +91,24 @@
   <script src="js/local_storage_manager.js"></script>
   <script src="js/game_manager.js"></script>
   <script src="js/application.js"></script>
+  <script>
+    // Scala il gioco perché timer, punteggi e griglia stiano sempre interi nello schermo
+    // (anche in un riquadro basso come 1280x720); la spiegazione sotto può scorrere.
+    (function () {
+      var container = document.querySelector(".container");
+      var board = document.querySelector(".game-container");
+      function fit() {
+        document.body.style.zoom = 1;
+        var needH = board.getBoundingClientRect().bottom + window.scrollY + 16;
+        var needW = container.getBoundingClientRect().width + 16;
+        var z = Math.min(window.innerWidth <= 520 ? 1 : 1.3, window.innerHeight / needH, window.innerWidth / needW);
+        document.body.style.zoom = Math.max(0.5, Math.round(z * 100) / 100);
+      }
+      window.addEventListener("resize", fit);
+      window.addEventListener("load", fit);
+      fit();
+    })();
+  </script>
   
 </body>
 </html>
