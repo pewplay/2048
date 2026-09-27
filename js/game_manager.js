@@ -3,6 +3,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.inputManager   = new InputManager;
   this.storageManager = new StorageManager;
   this.actuator       = new Actuator;
+  this.timer          = new GameTimer("timer-value");
 
   this.startTiles     = 2;
 
@@ -17,6 +18,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
 GameManager.prototype.restart = function () {
   this.storageManager.clearGameState();
   this.actuator.continueGame(); // Clear the game won/lost message
+  this.timer.stop();
   this.setup();
 };
 
@@ -24,6 +26,7 @@ GameManager.prototype.restart = function () {
 GameManager.prototype.keepPlaying = function () {
   this.keepPlaying = true;
   this.actuator.continueGame(); // Clear the game won/lost message
+  this.timer.start();
 };
 
 // Return true if the game is lost, or has won and the user hasn't kept playing
@@ -43,12 +46,14 @@ GameManager.prototype.setup = function () {
     this.over        = previousState.over;
     this.won         = previousState.won;
     this.keepPlaying = previousState.keepPlaying;
+    this.timer.set(previousState.time);
   } else {
     this.grid        = new Grid(this.size);
     this.score       = 0;
     this.over        = false;
     this.won         = false;
     this.keepPlaying = false;
+    this.timer.set(0);
 
     // Add the initial tiles
     this.addStartTiles();
@@ -77,6 +82,8 @@ GameManager.prototype.addRandomTile = function () {
 
 // Sends the updated grid to the actuator
 GameManager.prototype.actuate = function () {
+  if (this.isGameTerminated()) this.timer.stop();
+
   if (this.storageManager.getBestScore() < this.score) {
     this.storageManager.setBestScore(this.score);
   }
@@ -105,7 +112,8 @@ GameManager.prototype.serialize = function () {
     score:       this.score,
     over:        this.over,
     won:         this.won,
-    keepPlaying: this.keepPlaying
+    keepPlaying: this.keepPlaying,
+    time:        this.timer.seconds
   };
 };
 
@@ -180,6 +188,7 @@ GameManager.prototype.move = function (direction) {
   });
 
   if (moved) {
+    this.timer.start();
     this.addRandomTile();
 
     if (!this.movesAvailable()) {

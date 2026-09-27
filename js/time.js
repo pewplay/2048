@@ -1,49 +1,40 @@
-let timers = {};
-
-function startTimer(id) {
-  if (!timers[id]) {
-    timers[id] = { intervalId: null, value: 0 };
-  }
-  timers[id].intervalId = setInterval(() => {
-    timers[id].value++;
-    const timerElement = document.getElementById(id);
-    if (timerElement) {
-      const minutes = String(Math.floor(timers[id].value / 60)).padStart(2, "0");
-      const seconds = String(timers[id].value % 60).padStart(2, "0");
-      timerElement.innerHTML = `${minutes}:${seconds}`;
-    }
-  }, 1000);
+// Timer della partita: parte alla prima mossa, si ferma a fine partita e in pausa
+// quando la scheda non è visibile. Il tempo viene salvato insieme alla partita.
+function GameTimer(elementId) {
+  this.el = document.getElementById(elementId);
+  this.seconds = 0;
+  this.running = false;
+  this.intervalId = null;
+  var self = this;
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) self.tick(false); else if (self.running) self.tick(true);
+  });
 }
 
-function pauseTimer(id) {
-  if (timers[id]) {
-    clearInterval(timers[id].intervalId);
-  }
-}
+GameTimer.prototype.tick = function (on) {
+  var self = this;
+  clearInterval(this.intervalId);
+  this.intervalId = on ? setInterval(function () { self.seconds++; self.render(); }, 1000) : null;
+};
 
-function resumeTimer(id) {
-  if (timers[id]) {
-    startTimer(id);
-  }
-}
+GameTimer.prototype.start = function () {
+  if (this.running) return;
+  this.running = true;
+  if (!document.hidden) this.tick(true);
+};
 
-function resetTimer(id) {
-    if (timers[id]) {
-      timers[id].value = 0;
-      const timerElement = document.getElementById(id);
-      if (timerElement) {
-        timerElement.innerHTML = "00:00";
-      }
-    }
-  }
-  
+GameTimer.prototype.stop = function () {
+  this.running = false;
+  this.tick(false);
+};
 
-let intervalId1;
+GameTimer.prototype.set = function (seconds) {
+  this.seconds = seconds || 0;
+  this.render();
+};
 
-
-function onDocumentLoad() {
-    intervalId1 = startTimer("timer-value");
-  }
-  
-  window.addEventListener("load", onDocumentLoad);
-  
+GameTimer.prototype.render = function () {
+  if (!this.el) return;
+  var m = Math.floor(this.seconds / 60), s = this.seconds % 60;
+  this.el.textContent = (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
+};

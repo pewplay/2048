@@ -19,8 +19,10 @@ window.fakeStorage = {
 };
 
 function LocalStorageManager() {
-  this.bestScoreKey     = "bestScore";
-  this.gameStateKey     = "gameState";
+  // Prefisso unico: su PewPlay tutti i giochi condividono lo stesso dominio
+  // (senza prefisso questo 2048 leggerebbe i salvataggi degli altri 2048)
+  this.bestScoreKey     = "2048:bestScore";
+  this.gameStateKey     = "2048:gameState";
 
   var supported = this.localStorageSupported();
   this.storage = supported ? window.localStorage : window.fakeStorage;
