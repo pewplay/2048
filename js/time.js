@@ -1,5 +1,5 @@
-// Timer della partita: parte alla prima mossa, si ferma a fine partita e in pausa
-// quando la scheda non è visibile. Il tempo viene salvato insieme alla partita.
+// Game timer: starts with the first move, stops when the game ends and pauses
+// while the page is hidden. The time is saved together with the game.
 function GameTimer(elementId) {
   this.el = document.getElementById(elementId);
   this.seconds = 0;
