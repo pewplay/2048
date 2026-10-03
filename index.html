@@ -2,88 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>2048</title>
-
-  <link href="style/main.css" rel="stylesheet" type="text/css">
-  <link rel="shortcut icon" href="favicon.ico">
+  <meta name="description" content="Slide the numbered tiles, merge matching pairs and build the 2048 tile.">
+  <meta name="theme-color" content="#faf8ef">
+  <link href="style/main.css" rel="stylesheet">
+  <link rel="icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="meta/apple-touch-icon.png">
-  <link rel="apple-touch-startup-image" href="meta/apple-touch-startup-image-640x1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"> <!-- iPhone 5+ -->
-  <link rel="apple-touch-startup-image" href="meta/apple-touch-startup-image-640x920.png"  media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)"> <!-- iPhone, retina -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 <body>
-  
-  <div class="container">
-    
-    <div id="timer-value" class="timer-container">00:00</div>
-    <div class="heading">
+  <main class="app" id="app" data-sides="1">
+    <header class="head">
       <h1 class="title">2048</h1>
-      <div class="scores-container">
-        <div class="score-container">0</div>
-        <div class="best-container">0</div>
+      <div class="scores">
+        <div class="score-box"><span class="label">Time</span><span id="timer-value" class="value">00:00</span></div>
+        <div class="score-box"><span class="label">Score</span><div class="score-container value">0</div></div>
+        <div class="score-box"><span class="label">Best</span><div class="best-container value">0</div></div>
       </div>
-    </div>
+    </header>
 
-    <div class="above-game">
+    <div class="bar">
       <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
-      <a class="restart-button">New Game</a>
+      <button type="button" class="restart-button btn">New Game</button>
     </div>
 
-    <div class="game-container">
-      <div class="game-message">
-        <p></p>
-        <div class="lower">
-	        <a class="keep-playing-button">Keep going</a>
-          <a class="retry-button">Try again</a>
+    <div class="stage">
+      <div class="game-container" aria-label="Game board">
+        <div class="game-message" aria-live="polite">
+          <p></p>
+          <div class="lower">
+            <button type="button" class="keep-playing-button btn">Keep going</button>
+            <button type="button" class="retry-button btn">Try again</button>
+          </div>
         </div>
-      </div>
 
-      <div class="grid-container">
-        <div class="grid-row">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
+        <div class="grid-container">
+          <div class="grid-row"><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div></div>
+          <div class="grid-row"><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div></div>
+          <div class="grid-row"><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div></div>
+          <div class="grid-row"><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div></div>
         </div>
-        <div class="grid-row">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-        </div>
-        <div class="grid-row">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-        </div>
-        <div class="grid-row">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-        </div>
-      </div>
 
-      <div class="tile-container">
-
+        <div class="tile-container"></div>
       </div>
     </div>
 
-    <p class="game-explanation">
-      <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> or <strong>swipe</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
+    <p class="help optional">
+      <strong>How to play:</strong>
+      <span class="touch-only"><strong>Swipe</strong> anywhere to move the tiles.</span>
+      <span class="no-touch-only">Use the <strong>arrow keys</strong> or <strong>WASD</strong> (or drag with the mouse) to move the tiles.</span>
+      When two tiles with the same number touch, they <strong>merge into one!</strong>
+      The timer starts with your first move.
     </p>
-  </div>
+  </main>
 
+  <script src="js/layout.js"></script>
   <script src="js/time.js"></script>
-  <script src="js/bind_polyfill.js"></script>
-  <script src="js/classlist_polyfill.js"></script>
-  <script src="js/animframe_polyfill.js"></script>
   <script src="js/keyboard_input_manager.js"></script>
   <script src="js/html_actuator.js"></script>
   <script src="js/grid.js"></script>
@@ -91,24 +65,5 @@
   <script src="js/local_storage_manager.js"></script>
   <script src="js/game_manager.js"></script>
   <script src="js/application.js"></script>
-  <script>
-    // Scala il gioco perché timer, punteggi e griglia stiano sempre interi nello schermo
-    // (anche in un riquadro basso come 1280x720); la spiegazione sotto può scorrere.
-    (function () {
-      var container = document.querySelector(".container");
-      var board = document.querySelector(".game-container");
-      function fit() {
-        document.body.style.zoom = 1;
-        var needH = board.getBoundingClientRect().bottom + window.scrollY + 16;
-        var needW = container.getBoundingClientRect().width + 16;
-        var z = Math.min(window.innerWidth <= 520 ? 1 : 1.3, window.innerHeight / needH, window.innerWidth / needW);
-        document.body.style.zoom = Math.max(0.5, Math.round(z * 100) / 100);
-      }
-      window.addEventListener("resize", fit);
-      window.addEventListener("load", fit);
-      fit();
-    })();
-  </script>
-  
 </body>
 </html>

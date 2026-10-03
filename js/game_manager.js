@@ -12,6 +12,16 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
 
   this.setup();
+
+  // Keep the running timer in the saved game when the page is hidden or closed.
+  var self = this;
+  function persist() {
+    if (!self.over) self.storageManager.setGameState(self.serialize());
+  }
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) persist();
+  });
+  window.addEventListener("pagehide", persist);
 }
 
 // Restart the game
@@ -27,6 +37,7 @@ GameManager.prototype.keepPlaying = function () {
   this.keepPlaying = true;
   this.actuator.continueGame(); // Clear the game won/lost message
   this.timer.start();
+  this.storageManager.setGameState(this.serialize());
 };
 
 // Return true if the game is lost, or has won and the user hasn't kept playing

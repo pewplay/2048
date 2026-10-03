@@ -19,8 +19,8 @@ window.fakeStorage = {
 };
 
 function LocalStorageManager() {
-  // Prefisso unico: su PewPlay tutti i giochi condividono lo stesso dominio
-  // (senza prefisso questo 2048 leggerebbe i salvataggi degli altri 2048)
+  // Keys are prefixed with the game slug: every PewPlay game shares one domain,
+  // so each 2048 version keeps its own scores.
   this.bestScoreKey     = "2048:bestScore";
   this.gameStateKey     = "2048:gameState";
 
@@ -53,7 +53,12 @@ LocalStorageManager.prototype.setBestScore = function (score) {
 // Game state getters/setters and clearing
 LocalStorageManager.prototype.getGameState = function () {
   var stateJSON = this.storage.getItem(this.gameStateKey);
-  return stateJSON ? JSON.parse(stateJSON) : null;
+  try {
+    var state = stateJSON ? JSON.parse(stateJSON) : null;
+    return state && state.grid && state.grid.size === 4 ? state : null;
+  } catch (e) {
+    return null;
+  }
 };
 
 LocalStorageManager.prototype.setGameState = function (gameState) {
